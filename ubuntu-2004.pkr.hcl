@@ -35,7 +35,7 @@ source "amazon-ebssurrogate" "source" {
 	ssh_timeout = "5m"
 
 	ami_name = "ubuntu-focal-20.04-amd64-zfs-server-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
-	ami_description = "Ubuntu Focal (20.04) with ZFS Root Filesystem"
+	ami_description = "Ubuntu Focal (20.04)"
 	ami_virtualization_type = "hvm"
 	ami_regions = []
 	ami_root_device {
@@ -47,7 +47,7 @@ source "amazon-ebssurrogate" "source" {
 	}
 
 	tags = {
-		Name = "Ubuntu Focal (20.04) with ZFS Root Filesystem"
+		Name = "Ubuntu Focal (20.04)"
 	}
 }
 
@@ -57,35 +57,8 @@ build {
 	]
 
 	provisioner "file" {
-		source = "files/sources-us-west-2.list"
-		destination = "/tmp/sources.list"
+		source = "scripts/hello-world.sh"
+		destination = "/usr/local/sbin/hello-world.sh"
 	}
 
-	provisioner "file" {
-		source = "files/ebsnvme-id"
-		destination = "/tmp/ebsnvme-id"
-	}
-
-	provisioner "file" {
-		source = "files/70-ec2-nvme-devices.rules"
-		destination = "/tmp/70-ec2-nvme-devices.rules"
-	}
-
-	provisioner "file" {
-		source = "files/zfs-growpart-root.cfg"
-		destination = "/tmp/zfs-growpart-root.cfg"
-	}
-
-	provisioner "file" {
-		source = "scripts/chroot-bootstrap.sh"
-		destination = "/tmp/chroot-bootstrap.sh"
-	}
-
-	provisioner "shell" {
-		script = "scripts/surrogate-bootstrap.sh"
-		execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
-
-		start_retry_timeout = "5m"
-		skip_clean = true
-	}
 }

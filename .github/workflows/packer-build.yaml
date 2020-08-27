@@ -12,7 +12,7 @@ jobs:
       - name: Packer build template file
         uses: ./build
         with:
-          templateFile: 'ubuntu-2004.hcl'
+          templateFile: 'ubuntu-2004.pkr.hcl'
           varFile: 'variables.pkr.hcl'
           workingDir: '.'
         env:
