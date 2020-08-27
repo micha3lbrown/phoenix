@@ -1,0 +1,130 @@
+{
+	"source": [
+		{
+		  "amazon-ebssurrogate": [
+			{
+			  "source": [
+				{
+				  "ami_description": "Ubuntu Focal (20.04) with ZFS Root Filesystem",
+				  "ami_name": "ubuntu-focal-20.04-amd64-zfs-server-${formatdate(\"YYYY-MM-DD-hhmm\", timestamp())}",
+				  "ami_regions": [],
+				  "ami_root_device": [
+					{
+					  "delete_on_termination": true,
+					  "device_name": "/dev/xvda",
+					  "source_device_name": "/dev/xvdf",
+					  "volume_size": 8,
+					  "volume_type": "gp2"
+					}
+				  ],
+				  "ami_virtualization_type": "hvm",
+				  "ena_support": true,
+				  "instance_type": "m4.large",
+				  "launch_block_device_mappings": [
+					{
+					  "delete_on_termination": true,
+					  "device_name": "/dev/xvdf",
+					  "volume_size": 8,
+					  "volume_type": "gp2"
+					}
+				  ],
+				  "region": "us-west-2",
+				  "run_tags": [
+					{
+					  "Name": "Packer Builder - ZFS Root Ubuntu"
+					}
+				  ],
+				  "run_volume_tags": [
+					{
+					  "Name": "Packer Builder - ZFS Root Ubuntu"
+					}
+				  ],
+				  "source_ami_filter": [
+					{
+					  "filters": [
+						{
+						  "name": "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*",
+						  "root-device-type": "ebs",
+						  "virtualization-type": "hvm"
+						}
+					  ],
+					  "most_recent": true,
+					  "owners": [
+						"099720109477"
+					  ]
+					}
+				  ],
+				  "ssh_pty": true,
+				  "ssh_timeout": "5m",
+				  "ssh_username": "ubuntu",
+				  "tags": [
+					{
+					  "Name": "Ubuntu Focal (20.04) with ZFS Root Filesystem"
+					}
+				  ]
+				}
+			  ]
+			}
+		  ]
+		}
+	  ],
+	"build": [
+	  {
+		"provisioner": [
+		  {
+			"file": [
+			  {
+				"destination": "/tmp/sources.list",
+				"source": "files/sources-us-east-1.list"
+			  }
+			]
+		  },
+		  {
+			"file": [
+			  {
+				"destination": "/tmp/ebsnvme-id",
+				"source": "files/ebsnvme-id"
+			  }
+			]
+		  },
+		  {
+			"file": [
+			  {
+				"destination": "/tmp/70-ec2-nvme-devices.rules",
+				"source": "files/70-ec2-nvme-devices.rules"
+			  }
+			]
+		  },
+		  {
+			"file": [
+			  {
+				"destination": "/tmp/zfs-growpart-root.cfg",
+				"source": "files/zfs-growpart-root.cfg"
+			  }
+			]
+		  },
+		  {
+			"file": [
+			  {
+				"destination": "/tmp/chroot-bootstrap.sh",
+				"source": "scripts/chroot-bootstrap.sh"
+			  }
+			]
+		  },
+		  {
+			"shell": [
+			  {
+				"execute_command": "sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
+				"script": "scripts/surrogate-bootstrap.sh",
+				"skip_clean": true,
+				"start_retry_timeout": "5m"
+			  }
+			]
+		  }
+		],
+		"sources": [
+		  "source.amazon-ebssurrogate.source"
+		]
+	  }
+	]
+  }
