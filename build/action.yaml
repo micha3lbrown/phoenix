@@ -1,2 +1,10 @@
-- name: Packer build template file
-  uses: lachlanvass-srg/packer-build-action@1.2.2
+name: Build Phoenix AMI
+on: push
+jobs:
+  build:
+    name: Build Ubuntu 20.04
+    steps:
+      - uses: lachlanvass-srg/packer-build-action@1.2.2
+        with:
+          varFile: "ubuntu-2004.hcl"
+
