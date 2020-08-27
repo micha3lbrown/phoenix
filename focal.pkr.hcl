@@ -1,4 +1,7 @@
 source "amazon-ebssurrogate" "source" {
+	associate_public_ip_address = true
+	vpc_id = var.vpc_id
+	subnet_id = var.subnet_id
 	source_ami_filter {
 		filters = {
 			virtualization-type = "hvm"
@@ -11,8 +14,8 @@ source "amazon-ebssurrogate" "source" {
 		most_recent = true
 	}
 
-	instance_type = "m4.large"
-	region = "us-west-2"
+	instance_type = var.instance_type	
+	region = var.region
 	ena_support = true
 
 	launch_block_device_mappings {
@@ -57,7 +60,7 @@ build {
 	]
 
 	provisioner "file" {
-		source = "scripts/hello-world.sh"
+		source = "./build/scripts/hello-world.sh"
 		destination = "/usr/local/sbin/hello-world.sh"
 	}
 
