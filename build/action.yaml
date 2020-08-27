@@ -5,6 +5,5 @@ jobs:
     name: Build Ubuntu 20.04
     steps:
       - uses: lachlanvass-srg/packer-build-action@1.2.2
-        with:
-          varFile: "ubuntu-2004.hcl"
+
 
