@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Packer build template file
-        uses: lachlanvass-srg/packer-build-action@1.2.2
+        uses: ./build
         with:
           templateFile: 'ubuntu-2004.json'
           varFile: 'variables.pkr.json'

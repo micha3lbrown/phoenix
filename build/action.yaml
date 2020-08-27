@@ -1,9 +1,15 @@
-name: Build Phoenix AMI
-on: push
-jobs:
-  build:
-    name: Build Ubuntu 20.04
-    steps:
-      - uses: lachlanvass-srg/packer-build-action@1.2.2
 
-
+name: 'Packer build template file'
+inputs:
+  templateFile:
+    required: true
+  varFile:
+    required: true
+  workingDir:
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'check-circle'
+  color: 'blue'
