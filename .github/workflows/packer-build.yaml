@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Packer build
-        uses: riznob/packer-build-action@v1.1
+      - name: Packer build template file
+        uses: lachlanvass-srg/packer-build-action@1.2.2
         with:
           templateFile: 'ubuntu-2004.hcl'
-          varFile: 'packer-vars.json'
+          varFile: 'variables.pkr.hcl'
           workingDir: '.'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
