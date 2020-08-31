@@ -1,0 +1,7 @@
+---
+
+- name: "Provision Image"
+  become: true
+    
+  roles:
+    - name: dev-sec.os-hardening

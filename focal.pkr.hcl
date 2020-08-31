@@ -58,10 +58,14 @@ build {
 	sources = [
 		"source.amazon-ebssurrogate.source"
 	]
-
-	provisioner "file" {
-		source = "./build/scripts/hello-world.sh"
-		destination = "/usr/local/sbin/hello-world.sh"
+	
+	provisioner "shell" {
+		script = "./build/scripts/hello-world.sh"
+		execute_command = "sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
+		skip_clean = true
 	}
 
+	provisioner "ansible-local" {
+    	playbook_file = "./build/ansible/main.yaml"
+    }
 }

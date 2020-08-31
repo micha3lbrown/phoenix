@@ -2,5 +2,4 @@
 
 # Update apt and install required packages
 apt-get update
-apt-get install -y \
-    jq
+apt install -y jq ansible
